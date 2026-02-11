@@ -1,9 +1,11 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Hangfire;
+using Jobs.JobClass.LogOut;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PiggyBank.Interfaces;
-using PiggyBank.Models;
+using PiggyBank.Jobs.JobsRandomMoneyGive;
 using PiggyBank.Reposiroty;
 using PiggyBank.Reposiroty.Database;
 using PiggyBank.Reposiroty.Entity.UserEntity;
@@ -15,30 +17,40 @@ var builder = WebApplication.CreateBuilder(args);
 // -------------------- SERVICES (DI) --------------------
 builder.Services.AddControllers();
 
+// Db
+builder.Services.AddDbContext<PiggyBankDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PiggyBankDb")));
+
+builder.Services.AddScoped<IPiggyBankDbContext>(sp =>
+    sp.GetRequiredService<PiggyBankDbContext>());
+
+// Hangfire (using PiggyBankDb)
+builder.Services.AddHangfire(cfg =>
+    cfg.UseSqlServerStorage(builder.Configuration.GetConnectionString("PiggyBankDb")));
+
+builder.Services.AddHangfireServer();
+
+// Job classes
+builder.Services.AddScoped<JobLogOut>();
+builder.Services.AddScoped<GiveRandomMoney>();
+
+// Identity password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 // FluentValidation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-//----------------------Db--------------------------------
-builder.Services.AddDbContext<PiggyBankDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PiggyBankDb")));
-builder.Services.AddScoped<IPiggyBankDbContext>(sp =>
-    sp.GetRequiredService<PiggyBankDbContext>());
-
-
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Your DI
-
 builder.Services.AddScoped<IUserAuTh, UserRegistrationRepository>();
 builder.Services.AddScoped<IPiggyBank, PiggyBankRepository>();
 builder.Services.AddScoped<IUserBankAccount, UserBankAccount>();
 
-// Rate Limiter: 3 requests per minute per IP
+// Rate Limiter
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -68,10 +80,29 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseRateLimiter();     // ✅ must be before MapControllers works fine
-
+app.UseRateLimiter();
 app.UseAuthorization();
+
+// Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
+
+// Schedule recurring jobs (ONE scope)
+using (var scope = app.Services.CreateScope())
+{
+    var recurring = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+
+    recurring.AddOrUpdate<JobLogOut>(
+        "logout-job",                 // ✅ unique id
+        job => job.Run(),
+        Cron.Minutely
+    );
+  
+    recurring.AddOrUpdate<GiveRandomMoney>(
+        "give-random-money-job",
+        job => job.Run(),
+        Cron.MinuteInterval(10) // ✅ every 10 minutes
+    );
+}
 
 // -------------------- ENDPOINTS --------------------
 app.MapControllers();

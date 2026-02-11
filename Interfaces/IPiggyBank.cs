@@ -4,6 +4,7 @@
     {
         public decimal AddCash(string mail, decimal cash);
         public string ShowCash(string mail);
-        public decimal GetCash();       
+        public decimal GetCash();  
+        
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PiggyBank.Reposiroty.Database;
 
@@ -11,9 +12,11 @@ using PiggyBank.Reposiroty.Database;
 namespace PiggyBank.Migrations
 {
     [DbContext(typeof(PiggyBankDbContext))]
-    partial class PiggyBankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260211125326_koba")]
+    partial class koba
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace PiggyBank.Migrations
 
                     b.Property<decimal>("CashAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("DebitTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DepositTime")
                         .HasColumnType("datetime2");

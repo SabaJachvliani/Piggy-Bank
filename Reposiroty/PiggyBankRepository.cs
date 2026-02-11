@@ -17,7 +17,7 @@ namespace PiggyBank.Reposiroty
         public decimal AddCash(string mail, decimal cash)
         {
             var user = _db.Users.FirstOrDefault(x => x.Email == mail);
-
+            
             if (user == null || user.IsActive == false)
             {
                 throw new Exception(" please logg in ");
@@ -37,6 +37,7 @@ namespace PiggyBank.Reposiroty
             piggyBank.CashAmount += cash;
             piggyBank.DepositorId = user.Id;
             piggyBank.DepositTime = DateTime.Now;
+            piggyBank.DebitTime = null;
 
             _db.PiggyBanks.Add(piggyBank);
             
