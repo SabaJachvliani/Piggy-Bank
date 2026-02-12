@@ -1,5 +1,4 @@
-﻿using PiggyBank.Models;
-using PiggyBank.Reposiroty.Entity.UserEntity;
+﻿using PiggyBank.Reposiroty.Entity.UserEntity;
 
 namespace PiggyBank.Helper
 {

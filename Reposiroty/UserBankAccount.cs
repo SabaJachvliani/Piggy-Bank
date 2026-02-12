@@ -70,6 +70,5 @@ namespace PiggyBank.Reposiroty
             _db.SaveChanges();
             return (amount, user.Name);
         }
-
     }
 }

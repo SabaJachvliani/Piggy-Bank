@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace PiggyBank.Models.DTO
+﻿namespace PiggyBank.Models.DTO
 {
     public class LogInn 
     {

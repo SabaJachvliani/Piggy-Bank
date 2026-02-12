@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PiggyBank.Interfaces;
 
 namespace PiggyBank.Servises.LoggerService;
 
 public sealed class ErrorLoggingMiddleware : IMiddleware
 {
-    private readonly IErrorlogerInterface _logger; // use your interface name
+    private readonly IErrorlogerInterface _logger; 
 
     public ErrorLoggingMiddleware(IErrorlogerInterface logger)
     {
@@ -28,8 +27,7 @@ public sealed class ErrorLoggingMiddleware : IMiddleware
                 await _logger.LogAsync(ex, context, status);
             }
             catch { }
-
-            // if response already started, you can't rewrite it
+            
             if (context.Response.HasStarted)
                 throw;
 

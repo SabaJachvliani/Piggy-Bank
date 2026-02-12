@@ -18,11 +18,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.Email)
             .HasMaxLength(200)
             .IsRequired();
-
-        // ✅ One User -> Many PiggyBank deposits
+        
         builder.HasMany(u => u.PiggyBankDeposit)
-               .WithOne(p => p.Depositor)          // navigation in PiggyBank
-               .HasForeignKey(p => p.DepositorId)  // FK in PiggyBank
+               .WithOne(p => p.Depositor)          
+               .HasForeignKey(p => p.DepositorId)  
                .OnDelete(DeleteBehavior.Restrict);
     }
 }

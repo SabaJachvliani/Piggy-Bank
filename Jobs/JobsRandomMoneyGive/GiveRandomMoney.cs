@@ -7,12 +7,8 @@ namespace PiggyBank.Jobs.JobsRandomMoneyGive
     {
 
         public readonly IPiggyBankDbContext _db;
-        public GiveRandomMoney(IPiggyBankDbContext db)
-        {
-            _db = db;
-
-        }
-
+        public GiveRandomMoney(IPiggyBankDbContext db) => _db = db;
+        
         public Task Run()
         {                        
             var piggies = _db.PiggyBanks

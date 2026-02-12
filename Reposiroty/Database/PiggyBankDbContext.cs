@@ -4,8 +4,6 @@ using PiggyBank.Reposiroty.Entity.PiggyBankEntity;
 using PiggyBank.Reposiroty.Entity.UserEntity;
 using PiggyBank.Reposiroty.RepositoryInterface;
 
-
-
 namespace PiggyBank.Reposiroty.Database
 {
     public class PiggyBankDbContext : DbContext, IPiggyBankDbContext

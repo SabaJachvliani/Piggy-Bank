@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PiggyBank.Interfaces;
-using PiggyBank.Models;
 using PiggyBank.Models.DTO;
 using PiggyBank.Reposiroty.Entity.UserEntity;
 using PiggyBank.Reposiroty.RepositoryInterface;
@@ -10,9 +9,7 @@ namespace PiggyBank.Reposiroty
     public class UserRegistrationRepository : IUserAuTh
     {
         public readonly IPasswordHasher<User> _passwordHasher;
-
         
-
         public readonly IPiggyBankDbContext _db; 
         public UserRegistrationRepository(IPiggyBankDbContext db, IPasswordHasher<User> passwordHasher)
         {
@@ -39,7 +36,6 @@ namespace PiggyBank.Reposiroty
             user.IsActive = true;
             user.ActivationTime = DateTime.Now;
             
-
             _db.SaveChanges();
 
             return true;

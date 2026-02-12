@@ -89,16 +89,14 @@ app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseAuthorization();
 
-// Hangfire Dashboard
 app.UseHangfireDashboard("/hangfire");
 
-// Schedule recurring jobs (ONE scope)
 using (var scope = app.Services.CreateScope())
 {
     var recurring = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
 
     recurring.AddOrUpdate<JobLogOut>(
-        "logout-job",                 // ✅ unique id
+        "logout-job",                 
         job => job.Run(),
         Cron.Minutely
     );
@@ -106,7 +104,7 @@ using (var scope = app.Services.CreateScope())
     recurring.AddOrUpdate<GiveRandomMoney>(
         "give-random-money-job",
         job => job.Run(),
-        Cron.MinuteInterval(10) // ✅ every 10 minutes
+        Cron.MinuteInterval(10) 
     );
 }
 

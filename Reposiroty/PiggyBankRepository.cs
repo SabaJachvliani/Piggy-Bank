@@ -1,8 +1,6 @@
 ﻿using PiggyBank.Helper;
 using PiggyBank.Interfaces;
-using PiggyBank.Models;
 using PiggyBank.Reposiroty.Entity.PiggyBankEntity;
-using PiggyBank.Reposiroty.Entity.UserEntity;
 using PiggyBank.Reposiroty.RepositoryInterface;
 namespace PiggyBank.Reposiroty
 {
@@ -69,8 +67,6 @@ namespace PiggyBank.Reposiroty
             string allCash = piggyBank.CashAmount.ToString();
 
             return allCash + " - all amount of money ";
-        }
-
-       
+        }       
     }
 }

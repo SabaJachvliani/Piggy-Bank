@@ -18,7 +18,7 @@ namespace Jobs.JobClass.LogOut
                 .Where(u => u.IsActive
                             && u.ActivationTime != null
                             && u.ActivationTime <= cutoff)
-                .ToList();   // ✅ here
+                .ToList(); 
 
             foreach (var u in usersToLogout)
             {
@@ -26,7 +26,7 @@ namespace Jobs.JobClass.LogOut
                 u.ActivationTime = null;
             }
 
-            _db.SaveChanges(); // if you have it
+            _db.SaveChanges(); 
             return Task.CompletedTask;
         }
     }

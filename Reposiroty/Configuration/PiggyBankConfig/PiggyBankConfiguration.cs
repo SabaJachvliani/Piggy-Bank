@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PiggyBank.Reposiroty.Entity.PiggyBankEntity;
 
-
 namespace PiggyBank.Reposiroty.Configuration.PiggyBankConfig
 {
     public class PiggyBankConfiguration : IEntityTypeConfiguration<PiggyBankClass>
