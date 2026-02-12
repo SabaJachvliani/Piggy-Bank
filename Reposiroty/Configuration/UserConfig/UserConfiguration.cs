@@ -6,7 +6,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
+
+        builder.ToTable("Users", t => t.ExcludeFromMigrations());
 
         builder.HasKey(x => x.Id);
 

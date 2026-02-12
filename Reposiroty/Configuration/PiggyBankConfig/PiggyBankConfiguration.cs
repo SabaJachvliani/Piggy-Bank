@@ -9,7 +9,7 @@ namespace PiggyBank.Reposiroty.Configuration.PiggyBankConfig
     {
         public void Configure(EntityTypeBuilder<PiggyBankClass> builder)
         {
-            builder.ToTable("PiggyBank");
+            builder.ToTable("PiggyBank", t => t.ExcludeFromMigrations());
 
             builder.HasKey(x => x.Id);
 

@@ -10,6 +10,7 @@ using PiggyBank.Reposiroty;
 using PiggyBank.Reposiroty.Database;
 using PiggyBank.Reposiroty.Entity.UserEntity;
 using PiggyBank.Reposiroty.RepositoryInterface;
+using PiggyBank.Servises.LoggerService;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,9 @@ builder.Services.AddHangfireServer();
 // Job classes
 builder.Services.AddScoped<JobLogOut>();
 builder.Services.AddScoped<GiveRandomMoney>();
+
+builder.Services.AddScoped<IErrorlogerInterface, DbErrorLogger>();
+builder.Services.AddScoped<ErrorLoggingMiddleware>();
 
 // Identity password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -71,6 +75,8 @@ builder.Services.AddRateLimiter(options =>
 
 // -------------------- BUILD APP --------------------
 var app = builder.Build();
+
+app.UseMiddleware<ErrorLoggingMiddleware>();
 
 // -------------------- MIDDLEWARE --------------------
 if (app.Environment.IsDevelopment())
